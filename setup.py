@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-docs_require = ["sphinx>=1.4.0"]
+docs_require = ["mkdocs>=1.0.4", "mkdocs-material==4.4.0"]
 
 install_requires = ["pytest>=4.0.0", "pytest-bdd>=3.0.0", "pytest-splinter>=2.0.0"]
 

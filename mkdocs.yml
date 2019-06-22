@@ -1,0 +1,9 @@
+site_name: Pytest BDD Splinter
+nav:
+  - index.md
+  - overview.md
+  - examples.md
+theme: material
+markdown_extensions:
+  - codehilite
+  - pymdownx.inlinehilite
