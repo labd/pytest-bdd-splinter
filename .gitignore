@@ -1,0 +1,13 @@
+*.egg-info
+*.pyc
+
+geckodriver.log
+.python-version
+
+reports/
+build/
+dist/
+.cache/
+.mypy_cache/
+.vscode/
+.tox/

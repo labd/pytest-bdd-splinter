@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Animations</h1>
+
+<div style="padding: 20px;">
+  <button id="button-with-id">Show content - 1</button>
+  <div id="content-1" style="display: none">Content - 1</div>
+
+  <script>
+    document.getElementById("button-with-id").addEventListener("click", function() {
+      var elm = document.getElementById("content-1");
+      elm.style.display = elm.style.display == "none" ? "block" : "none";
+    });
+  </script>
+</div>
+
+
+<div style="padding: 20px;">
+  <div id="area-with-id" style="width: 200px; height: 50px; background-color: #FF0000">Move mouse here</div>
+  <div id="content-2" style="display: none">Content - 2</div>
+
+  <script>
+    document.getElementById("area-with-id").addEventListener("mouseenter", function() {
+      var elm = document.getElementById("content-2");
+      elm.style.display = "block"
+    });
+    document.getElementById("area-with-id").addEventListener("mouseout", function() {
+      var elm = document.getElementById("content-2");
+      elm.style.display = "none"
+    });
+  </script>
+</div>
+
+{% endblock body %}

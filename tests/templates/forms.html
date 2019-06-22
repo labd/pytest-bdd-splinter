@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h1>Form 1</h1>
+<form>
+    <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name">
+    </div>
+    <div>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username">
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password">
+    </div>
+    <div>
+        <div>
+            <label for="checkbox-1">Checkbox 1</label>
+            <input type="checkbox" id="checkbox-1" name="checkbox-1">
+        </div>
+        <div>
+            <label for="checkbox-2">Checkbox 2</label>
+            <input type="checkbox" id="checkbox-2" name="checkbox-2">
+        </div>
+    </div>
+    <div>
+        <div>
+            <label for="radio-1">Radio 1</label>
+            <input type="radio" id="radio-1" name="radio">
+        </div>
+        <div>
+            <label for="radio-2">Radio 2</label>
+            <input type="radio" id="radio-2" name="radio">
+        </div>
+    </div>
+    <input type="submit">
+</form>
+{% endblock body %}
