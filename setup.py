@@ -25,6 +25,7 @@ setup(
     version="0.0.3",
     description="Common steps for pytest bdd and splinter integration",
     long_description=long_description,
+    long_description_content_type="text/markdown",
     url="https://github.com/labd/pytest-bdd-splinter",
     author="Lab Digital",
     author_email="",
