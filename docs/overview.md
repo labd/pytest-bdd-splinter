@@ -25,6 +25,7 @@ page](examples.md) you can see more information abouth the steps.
 - `#!gherkin When I wait for <number> seconds`
 - `#!gherkin When I press "<button-with-id/title/text>"`
 - `#!gherkin When I enter "<value>" in the "<field-name>" field"`
+- `#!gherkin When I enter "<value>" in the "<field-name>" field in form "<form-name>"`
 - `#!gherkin When I type in field "<field-name>" the value "<value>"`
 - `#!gherkin When I type "<value>" in field "<field-name>"`
 - `#!gherkin When I type in field "<field-name>" the value "<value>" with <number> characters per second`
@@ -37,3 +38,5 @@ page](examples.md) you can see more information abouth the steps.
 - `#!gherkin Then the checkbox "checkbox-1" is not checked`
 - `#!gherkin Then the radiobutton "radio-1" is checked`
 - `#!gherkin Then the radiobutton "radio-2" is not checked`
+- `#!gherkin Then the "<field>" field should contain "<value>"`
+- `#!gherkin Then the "<field>" field in form "<form>" should contain "<value>"`

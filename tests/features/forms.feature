@@ -49,3 +49,8 @@ Feature: Forms
             | password | mysecret |
         Then the "username" field should contain "johndoe"
         And the "password" field should contain "mysecret"
+
+    Scenario: Type text in field
+        Given I am on "/forms"
+        When I enter "foobar" in the "username" field in form "form-2"
+        Then the "username" field in "form-2" should contain "foobar"

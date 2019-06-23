@@ -44,6 +44,16 @@ def when_enter_value_in_field(browser: BaseWebDriver, field, value):
 
 @when(
     parsers.re(
+        r'^I enter "(?P<value>(?:\\.|[^"\\])*)" in the "(?P<field>(?:\\.|[^"\\])*)" field in form "(?P<form>(?:\\.|[^"\\])*)"$'
+    )
+)
+def when_enter_value_in_field_form(browser: BaseWebDriver, field, value, form):
+    """I enter "<value>" in the "<field>" field in form "<form>" """
+    browser.fill_form({field: value}, name=form)
+
+
+@when(
+    parsers.re(
         r'^I type "(?P<value>(?:\\.|[^"\\])*)" in field "(?P<field>(?:\\.|[^"\\])*)"$'
     )
 )
@@ -88,3 +98,13 @@ def when_fill_multiple_fields(browser: BaseWebDriver, text):
 )
 def then_field_contains(browser: BaseWebDriver, field, value):
     assert browser.find_by_name(field).value == value
+
+@then(
+    parsers.re(
+        r'the "(?P<field>(?:\\.|[^"\\])*)" field in "(?P<form>(?:\\.|[^"\\])*)" should contain "(?P<value>(?:\\.|[^"\\])*)"$'
+    )
+)
+def then_form_field_contains(browser: BaseWebDriver, field, value, form):
+    """the "<field>" field in form "<form>" should contain "<value>" """
+    form_elm = browser.find_by_name(form)
+    assert form_elm.find_by_name(field).value == value
