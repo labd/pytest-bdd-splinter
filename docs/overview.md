@@ -23,6 +23,8 @@ page](examples.md) you can see more information abouth the steps.
 - `#!gherkin When I press "button-with-id"`
 - `#!gherkin When I move my mouse to "Move mouse here"`
 - `#!gherkin When I type in field "field-name" the value "the-value"`
+- `#!gherkin When I wait for 1 second`
+- `#!gherkin When I wait for <number> seconds`
 - `#!gherkin When I fill in the following:` (multi-line, see examples)
 
 ## Then
