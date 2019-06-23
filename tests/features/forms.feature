@@ -14,6 +14,16 @@ Feature: Forms
 
     Scenario: Type text in field
         Given I am on "/forms"
+        When I enter "foobar" in the "username" field
+        Then the "username" field should contain "foobar"
+
+    Scenario: Type text in field alias
+        Given I am on "/forms"
+        When I type "foobar" in field "username"
+        Then the "username" field should contain "foobar"
+
+    Scenario: Type text in field
+        Given I am on "/forms"
         When I type in field "username" the value "foobar"
         Then the "username" field should contain "foobar"
 
@@ -25,6 +35,11 @@ Feature: Forms
     Scenario: Faster type text in field
         Given I am on "/forms"
         When I type in field "username" the value "foobar" with 8 characters per second
+        Then the "username" field should contain "foobar"
+
+    Scenario: Faster type text in field alias
+        Given I am on "/forms"
+        When I type "foobar" in field "username" with 8 characters per second
         Then the "username" field should contain "foobar"
 
     Scenario: Multifield input

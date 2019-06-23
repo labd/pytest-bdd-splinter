@@ -19,6 +19,7 @@ def checkbox_state(browser: BaseWebDriver, field, state):
     else:
         assert not elm.checked
 
+
 @then(
     parsers.re(
         r'the radiobutton "(?P<field>(?:\\.|[^"\\])*)" is (?P<state>not checked|checked)$'
@@ -32,16 +33,43 @@ def radiobutton_state(browser: BaseWebDriver, field, state):
         assert not elm.checked
 
 
-@when(parsers.re(r'^I type in field "(?P<field>(?:\\.|[^"\\])*)" the value "(?P<value>(?:\\.|[^"\\])*)"$'))
+@when(
+    parsers.re(
+        r'^I enter "(?P<value>(?:\\.|[^"\\])*)" in the "(?P<field>(?:\\.|[^"\\])*)" field$'
+    )
+)
+def when_enter_value_in_field(browser: BaseWebDriver, field, value):
+    browser.fill(field, value)
+
+
+@when(
+    parsers.re(
+        r'^I type "(?P<value>(?:\\.|[^"\\])*)" in field "(?P<field>(?:\\.|[^"\\])*)"$'
+    )
+)
+@when(
+    parsers.re(
+        r'^I type in field "(?P<field>(?:\\.|[^"\\])*)" the value "(?P<value>(?:\\.|[^"\\])*)"$'
+    )
+)
 def when_type_value_in_field(browser: BaseWebDriver, field, value):
     browser.type(field, value)
 
 
-@when(parsers.re(r'^I type in field "(?P<field>(?:\\.|[^"\\])*)" the value "(?P<value>(?:\\.|[^"\\])*)" with (?P<cps>\d+) characters? per second$'))
+@when(
+    parsers.re(
+        r'^I type "(?P<value>(?:\\.|[^"\\])*)" in field "(?P<field>(?:\\.|[^"\\])*)" with (?P<cps>\d+) characters? per second$'
+    )
+)
+@when(
+    parsers.re(
+        r'^I type in field "(?P<field>(?:\\.|[^"\\])*)" the value "(?P<value>(?:\\.|[^"\\])*)" with (?P<cps>\d+) characters? per second$'
+    )
+)
 def when_slowly_type_value_in_field(browser: BaseWebDriver, field, value, cps):
     cps = int(cps)
     for i in browser.type(field, value, slowly=True):
-        time.sleep(1.0/cps)
+        time.sleep(1.0 / cps)
 
 
 @when(parsers.parse("I fill in the following:\n{text}"))
