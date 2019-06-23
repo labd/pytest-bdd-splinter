@@ -1,3 +1,5 @@
+import re
+
 from setuptools import find_packages, setup
 
 docs_require = ["mkdocs>=1.0.4", "mkdocs-material==4.4.0"]
@@ -14,11 +16,15 @@ tests_require = [
     "flake8-debugger==1.4.0",
 ]
 
+with open('README.md') as fh:
+    long_description = re.sub(
+        '\[//]: # start-no-pypi.*\[//]: # end-no-pypi\n', '', fh.read(), flags=re.M | re.S)
+
 setup(
     name="pytest-bdd-splinter",
     version="0.0.1",
     description="Common steps for pytest bdd and splinter integration",
-    long_description=open("README.md", "r").read(),
+    long_description=long_description,
     url="https://github.com/labd/pytest-bdd-splinter",
     author="Lab Digital",
     author_email="",
