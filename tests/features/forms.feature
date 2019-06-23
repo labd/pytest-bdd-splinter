@@ -30,7 +30,7 @@ Feature: Forms
     Scenario: Multifield input
         Given I am on "/forms"
         When I fill in the following:
-            username: johndoe
-            password: mysecret
+            | username | johndoe  |
+            | password | mysecret |
         Then the "username" field should contain "johndoe"
         And the "password" field should contain "mysecret"

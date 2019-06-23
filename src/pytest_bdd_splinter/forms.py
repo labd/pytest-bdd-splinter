@@ -48,8 +48,8 @@ def when_slowly_type_value_in_field(browser: BaseWebDriver, field, value, cps):
 def when_fill_multiple_fields(browser: BaseWebDriver, text):
     data = {}
     for line in text.split("\n"):
-        field, value = line.split(":", 1)
-        data[field.strip()] = value.strip()
+        values = [i.strip() for i in line.strip().strip("|").split("|")]
+        data[values[0]] = values[1]
     browser.fill_form(data)
 
 

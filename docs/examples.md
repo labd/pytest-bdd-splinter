@@ -10,8 +10,8 @@ Scenario: Move the mouse to a div to trigger a javascript event
 Scenario: fill multiple form fields in one step
     Given I am on "/forms"
     When I fill in the following:
-        username: johndoe
-        password: mysecret
+        | username | johndoe  |
+        | password | mysecret |
     And I type in field "first_name" the value "Foo"
     Then the "username" field should contain "johndoe"
     And the "password" field should contain "mysecret"
