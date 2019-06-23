@@ -18,7 +18,7 @@ tests_require = [
 
 with open('README.md') as fh:
     long_description = re.sub(
-        '\[//]: # start-no-pypi.*\[//]: # end-no-pypi\n', '', fh.read(), flags=re.M | re.S)
+        '<!-- start-no-pypi -->.*<!-- end-no-pypi -->\n', '', fh.read(), flags=re.M | re.S)
 
 setup(
     name="pytest-bdd-splinter",
@@ -31,7 +31,6 @@ setup(
     install_requires=install_requires,
     tests_require=tests_require,
     extras_require={"docs": docs_require, "test": tests_require},
-    use_scm_version=True,
     package_dir={"": "src"},
     packages=find_packages("src"),
     include_package_data=True,
