@@ -22,7 +22,7 @@ with open('README.md') as fh:
 
 setup(
     name="pytest-bdd-splinter",
-    version="0.0.3",
+    version="0.1.0",
     description="Common steps for pytest bdd and splinter integration",
     long_description=long_description,
     long_description_content_type="text/markdown",
