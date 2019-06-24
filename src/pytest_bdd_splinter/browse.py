@@ -1,14 +1,8 @@
-from .utils import find_by_text
-
-from pytest_bdd import given, when, then
-from pytest_bdd import parsers
+from pytest_bdd import given, then, when
+from pytest_bdd.parsers import parse
 from splinter.driver.webdriver import BaseWebDriver
 
-
-def absolute_url(base_url, page):
-    if page.startswith(("http://", "https://")):
-        return page
-    return base_url + page
+from .utils import absolute_url, find_by_text
 
 
 @given("I am on the homepage")
@@ -16,7 +10,7 @@ def given_on_the_homepage(browser: BaseWebDriver, browser_base_url):
     browser.visit(absolute_url(browser_base_url, "/"))
 
 
-@given(parsers.re(r'I am on "(?P<page>[^"]+)"$'))
+@given(parse('I am on "{page}"'))
 def given_browse_to_page(browser, browser_base_url, page):
     browser.visit(absolute_url(browser_base_url, page))
 
@@ -26,7 +20,7 @@ def when_on_the_homepage(browser, browser_base_url):
     browser.visit(absolute_url(browser_base_url, "/"))
 
 
-@when(parsers.re(r'^I go to "(?P<page>[^"]+)"$'))
+@when(parse('I go to "{page}"'))
 def when_browse_to_page(browser, browser_base_url, page):
     browser.visit(absolute_url(browser_base_url, page))
 
@@ -46,12 +40,12 @@ def when_reload_the_page(browser):
     browser.reload()
 
 
-@when(parsers.re(r'I press "(?P<button>(?:\\.|[^"\\])*)"'))
+@when(parse('I press "{button}"'))
 def when_press_button(browser: BaseWebDriver, button):
     elm = find_by_text(browser, button)
     elm.click()
 
 
-@then(parsers.re(r'I should be on "(?P<page>[^"]+)"$'))
+@then(parse('I should be on "{page}"'))
 def should_be_on_page(browser, browser_base_url, page):
     assert browser.url == absolute_url(browser_base_url, page)

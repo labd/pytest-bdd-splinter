@@ -1,5 +1,6 @@
 import time
-from pytest_bdd import when, parsers
+
+from pytest_bdd import parsers, when
 from splinter.driver.webdriver import BaseWebDriver
 
 

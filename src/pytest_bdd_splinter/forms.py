@@ -1,79 +1,56 @@
 import time
 
-from .utils import find_by_text
-
-from pytest_bdd import when, then
-from pytest_bdd import parsers
+from pytest_bdd import then, when
+from pytest_bdd.parsers import parse
 from splinter.driver.webdriver import BaseWebDriver
 
+from .utils import find_by_text
 
-@then(
-    parsers.re(
-        r'the checkbox "(?P<field>(?:\\.|[^"\\])*)" is (?P<state>not checked|checked)$'
-    )
-)
-def checkbox_state(browser: BaseWebDriver, field, state):
+
+@then(parse('the checkbox "{field}" is checked'))
+def checkbox_checked(browser: BaseWebDriver, field):
     elm = find_by_text(browser, field)
-    if state == "checked":
-        assert elm.checked
-    else:
-        assert not elm.checked
+    assert elm.checked
 
 
-@then(
-    parsers.re(
-        r'the radiobutton "(?P<field>(?:\\.|[^"\\])*)" is (?P<state>not checked|checked)$'
-    )
-)
-def radiobutton_state(browser: BaseWebDriver, field, state):
+@then(parse('the checkbox "{field}" is not checked'))
+def checkbox_not_checked(browser: BaseWebDriver, field):
     elm = find_by_text(browser, field)
-    if state == "checked":
-        assert elm.checked
-    else:
-        assert not elm.checked
+    assert not elm.checked
 
 
-@when(
-    parsers.re(
-        r'^I enter "(?P<value>(?:\\.|[^"\\])*)" in the "(?P<field>(?:\\.|[^"\\])*)" field$'
-    )
-)
+@then(parse('the radiobutton "{field}" is checked'))
+def radiobutton_checked(browser: BaseWebDriver, field):
+    elm = find_by_text(browser, field)
+    assert elm.checked
+
+
+@then(parse('the radiobutton "{field}" is not checked'))
+def radiobutton_not_checked(browser: BaseWebDriver, field):
+    elm = find_by_text(browser, field)
+    assert not elm.checked
+
+
+@when(parse('I enter "{value}" in the "{field}" field'))
 def when_enter_value_in_field(browser: BaseWebDriver, field, value):
     browser.fill(field, value)
 
 
-@when(
-    parsers.re(
-        r'^I enter "(?P<value>(?:\\.|[^"\\])*)" in the "(?P<field>(?:\\.|[^"\\])*)" field in form "(?P<form>(?:\\.|[^"\\])*)"$'
-    )
-)
+@when(parse('I enter "{value}" in the "{field}" field in form "{form}"'))
 def when_enter_value_in_field_form(browser: BaseWebDriver, field, value, form):
-    """I enter "<value>" in the "<field>" field in form "<form>" """
     browser.fill_form({field: value}, name=form)
 
 
-@when(
-    parsers.re(
-        r'^I type "(?P<value>(?:\\.|[^"\\])*)" in field "(?P<field>(?:\\.|[^"\\])*)"$'
-    )
-)
-@when(
-    parsers.re(
-        r'^I type in field "(?P<field>(?:\\.|[^"\\])*)" the value "(?P<value>(?:\\.|[^"\\])*)"$'
-    )
-)
+@when(parse('I type "{value}" in field "{field}"'))
+@when(parse('I type in field "{field}" the value "{value}"'))
 def when_type_value_in_field(browser: BaseWebDriver, field, value):
     browser.type(field, value)
 
 
+@when(parse('I type "{value}" in field "{field}" with {cps:d} characters per second'))
 @when(
-    parsers.re(
-        r'^I type "(?P<value>(?:\\.|[^"\\])*)" in field "(?P<field>(?:\\.|[^"\\])*)" with (?P<cps>\d+) characters? per second$'
-    )
-)
-@when(
-    parsers.re(
-        r'^I type in field "(?P<field>(?:\\.|[^"\\])*)" the value "(?P<value>(?:\\.|[^"\\])*)" with (?P<cps>\d+) characters? per second$'
+    parse(
+        'I type in field "{field}" the value "{value}" with {cps:d} characters per second'
     )
 )
 def when_slowly_type_value_in_field(browser: BaseWebDriver, field, value, cps):
@@ -82,7 +59,16 @@ def when_slowly_type_value_in_field(browser: BaseWebDriver, field, value, cps):
         time.sleep(1.0 / cps)
 
 
-@when(parsers.parse("I fill in the following:\n{text}"))
+@when(parse('I type "{value}" in field "{field}" with 1 character per second'))
+@when(
+    parse('I type in field "{field}" the value "{value}" with 1 character per second')
+)
+def when_slowly_type_value_in_field_1cps(browser: BaseWebDriver, field, value):
+    for i in browser.type(field, value, slowly=True):
+        time.sleep(1)
+
+
+@when(parse("I fill in the following:\n{text}"))
 def when_fill_multiple_fields(browser: BaseWebDriver, text):
     data = {}
     for line in text.split("\n"):
@@ -91,20 +77,12 @@ def when_fill_multiple_fields(browser: BaseWebDriver, text):
     browser.fill_form(data)
 
 
-@then(
-    parsers.re(
-        r'the "(?P<field>(?:\\.|[^"\\])*)" field should contain "(?P<value>(?:\\.|[^"\\])*)"$'
-    )
-)
+@then(parse('the "{field}" field should contain "{value}"'))
 def then_field_contains(browser: BaseWebDriver, field, value):
     assert browser.find_by_name(field).value == value
 
-@then(
-    parsers.re(
-        r'the "(?P<field>(?:\\.|[^"\\])*)" field in "(?P<form>(?:\\.|[^"\\])*)" should contain "(?P<value>(?:\\.|[^"\\])*)"$'
-    )
-)
+
+@then(parse('the "{field}" field in "{form}" should contain "{value}"'))
 def then_form_field_contains(browser: BaseWebDriver, field, value, form):
-    """the "<field>" field in form "<form>" should contain "<value>" """
     form_elm = browser.find_by_name(form)
     assert form_elm.find_by_name(field).value == value

@@ -1,5 +1,5 @@
-from pytest_bdd import given, when, then
-from pytest_bdd import parsers
+from pytest_bdd import given, then, when
+from pytest_bdd.parsers import parse
 from splinter.driver.webdriver import BaseWebDriver
 
 DEVICES = {
@@ -18,33 +18,34 @@ def resize_browser_format_name(browser, device):
     browser.driver.set_window_size(*dimensions)
 
 
-@given(parsers.parse("I am using a window size of {width:d}x{height:x}"))
+@given(parse("I am using a window size of {width:d}x{height:x}"))
 def resize_browser_format_size(browser, width, height):
     browser.driver.set_window_size(width, height)
 
 
-@given(parsers.re(r"^I am using an? (?P<device>.*)$"))
+@given(parse("I am using a {device}"))
+@given(parse("I am using an {device}"))
 def resize_browser_format(browser, device):
     dimensions = DEVICES.get(device)
     assert dimensions is not None, f"No device with name {device}"
     browser.driver.set_window_size(*dimensions)
 
 
-@when(parsers.re(r'^I see "(?P<text>(?:\\.|[^"\\])*)"'))
+@when(parse('I see "{text}"'))
 def then_text_available(browser: BaseWebDriver, text):
     assert browser.is_text_present(text)
 
 
-@then(parsers.re(r'^I should see "(?P<text>(?:\\.|[^"\\])*)"'))
+@then(parse('I should see "{text}"'))
 def then_text_available(browser: BaseWebDriver, text):
     assert browser.is_text_present(text)
 
 
-@when(parsers.re(r'^I do not see "(?P<text>(?:\\.|[^"\\])*)"'))
+@when(parse('I do not see "{text}"'))
 def when_text_not_available(browser: BaseWebDriver, text):
     assert browser.is_text_not_present(text)
 
 
-@then(parsers.re(r'^I should not see "(?P<text>(?:\\.|[^"\\])*)"'))
+@then(parse('I should not see "{text}"'))
 def then_text_not_available(browser: BaseWebDriver, text):
     assert browser.is_text_not_present(text)
