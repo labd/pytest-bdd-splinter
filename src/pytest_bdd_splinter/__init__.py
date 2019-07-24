@@ -4,4 +4,4 @@ from .misc import *  # noqa
 from .mouse import *  # noqa
 from .rendering import *  # noqa
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
