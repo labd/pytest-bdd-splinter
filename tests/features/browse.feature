@@ -42,3 +42,8 @@ Feature: Browse
         When I do not see "Content - 1"
         And I press "Show content - 1"
         Then I should see "Content - 1"
+
+    Scenario: Test click on link with text
+        Given I am on the homepage
+        When I click on the link "go to subpage"
+        Then I should be on "/subpage/"

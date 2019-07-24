@@ -20,7 +20,8 @@ page](examples.md) you can see more information abouth the steps.
 - `#!gherkin When I reload the page`
 - `#!gherkin When I move backward one page`
 - `#!gherkin When I move forward one page`
-- `#!gherkin When I move my mouse to "Move mouse here"`
+- `#!gherkin When I move my mouse to "<element-id>"`
+- `#!gherkin When I click on the link "<text>"`
 - `#!gherkin When I wait for 1 second`
 - `#!gherkin When I wait for <number> seconds`
 - `#!gherkin When I press "<button-with-id/title/text>"`
