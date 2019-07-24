@@ -50,6 +50,11 @@ Feature: Forms
         Then the "username" field should contain "johndoe"
         And the "password" field should contain "mysecret"
 
+    Scenario: Select item in dropdown
+        Given I am on "/forms"
+        When I select the option "NL" from "country"
+        Then the option "NL" should be selected in "country"
+
     Scenario: Type text in field
         Given I am on "/forms"
         When I enter "foobar" in the "username" field in form "form-2"

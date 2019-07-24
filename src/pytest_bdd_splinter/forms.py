@@ -77,6 +77,11 @@ def when_fill_multiple_fields(browser: BaseWebDriver, text):
     browser.fill_form(data)
 
 
+@when(parse('I select the option "{value}" from "{field}"'))
+def when_form_option_select(browser: BaseWebDriver, field, value):
+    browser.select(field, value)
+
+
 @then(parse('the "{field}" field should contain "{value}"'))
 def then_field_contains(browser: BaseWebDriver, field, value):
     assert browser.find_by_name(field).value == value
@@ -86,3 +91,8 @@ def then_field_contains(browser: BaseWebDriver, field, value):
 def then_form_field_contains(browser: BaseWebDriver, field, value, form):
     form_elm = browser.find_by_name(form)
     assert form_elm.find_by_name(field).value == value
+
+
+@then(parse('the option "{value}" should be selected in "{field}"'))
+def then_form_option_selected(browser: BaseWebDriver, field, value):
+    assert browser.find_by_name(field).value == value

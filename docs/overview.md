@@ -31,6 +31,7 @@ page](examples.md) you can see more information abouth the steps.
 - `#!gherkin When I type in field "<field-name>" the value "<value>" with <number> characters per second`
 - `#!gherkin When I type "<value>" in field "<field-name> with <number> characters per second"`
 - `#!gherkin When I fill in the following:` (multi-line, see examples)
+- `#!gherkin When I select the option "<value>" from "<field-name>"`
 
 ## Then
 - `#!gherkin Then I should see "Content - 1"`
@@ -40,3 +41,4 @@ page](examples.md) you can see more information abouth the steps.
 - `#!gherkin Then the radiobutton "radio-2" is not checked`
 - `#!gherkin Then the "<field>" field should contain "<value>"`
 - `#!gherkin Then the "<field>" field in form "<form>" should contain "<value>"`
+- `#!gherkin Then the option "<value>" should be selected in "<field-name>"`
