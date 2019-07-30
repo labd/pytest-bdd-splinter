@@ -59,6 +59,23 @@
         <label for="password">Password</label>
         <input type="password" id="password" name="password">
     </div>
+    <div id="prefilled-container" style="display: none;">
+        <label for="prefilled">Prefilled</label>
+        <input type="text" id="prefilled" name="prefilled" value="prefilled">
+    </div>
+    <div id="lazy-prefilled-container" style="display: none;">
+        <label for="lazy-prefilled">Prefilled</label>
+        <input type="text" id="lazy-prefilled" name="lazy-prefilled">
+    </div>
     <button type="submit">Submit</button>
 </form>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function(){
+        document.getElementById("prefilled-container").style = "display: block;"
+        document.getElementById("lazy-prefilled-container").style = "display: block;"
+        document.getElementById("lazy-prefilled").value = "prefilled"
+    }, 400)
+});
+</script>
 {% endblock body %}

@@ -12,17 +12,17 @@ Feature: Forms
         Then the radiobutton "radio-1" is checked
         And the radiobutton "radio-2" is not checked
 
-    Scenario: Type text in field
+    Scenario: Type text in field simple
         Given I am on "/forms"
-        When I enter "foobar" in the "username" field
-        Then the "username" field should contain "foobar"
+        When I enter "some new text" in the "prefilled" field
+        Then the "prefilled" field should contain "some new text"
 
     Scenario: Type text in field alias
         Given I am on "/forms"
         When I type "foobar" in field "username"
         Then the "username" field should contain "foobar"
 
-    Scenario: Type text in field
+    Scenario: Type text in field alias 2
         Given I am on "/forms"
         When I type in field "username" the value "foobar"
         Then the "username" field should contain "foobar"
@@ -55,7 +55,7 @@ Feature: Forms
         When I select the option "NL" from "country"
         Then the option "NL" should be selected in "country"
 
-    Scenario: Type text in field
+    Scenario: Type text in field for specific form
         Given I am on "/forms"
         When I enter "foobar" in the "username" field in form "form-2"
         Then the "username" field in "form-2" should contain "foobar"

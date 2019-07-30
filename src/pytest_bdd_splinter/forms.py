@@ -4,7 +4,7 @@ from pytest_bdd import then, when
 from pytest_bdd.parsers import parse
 from splinter.driver.webdriver import BaseWebDriver
 
-from .utils import find_by_text
+from .utils import find_by_text, form_field_fill
 
 
 @then(parse('the checkbox "{field}" is checked'))
@@ -33,12 +33,12 @@ def radiobutton_not_checked(browser: BaseWebDriver, field):
 
 @when(parse('I enter "{value}" in the "{field}" field'))
 def when_enter_value_in_field(browser: BaseWebDriver, field, value):
-    browser.fill(field, value)
+    form_field_fill(browser, field, value)
 
 
 @when(parse('I enter "{value}" in the "{field}" field in form "{form}"'))
 def when_enter_value_in_field_form(browser: BaseWebDriver, field, value, form):
-    browser.fill_form({field: value}, name=form)
+    form_field_fill(browser, field, value, form_name=form)
 
 
 @when(parse('I type "{value}" in field "{field}"'))
@@ -70,11 +70,9 @@ def when_slowly_type_value_in_field_1cps(browser: BaseWebDriver, field, value):
 
 @when(parse("I fill in the following:\n{text}"))
 def when_fill_multiple_fields(browser: BaseWebDriver, text):
-    data = {}
     for line in text.split("\n"):
         values = [i.strip() for i in line.strip().strip("|").split("|")]
-        data[values[0]] = values[1]
-    browser.fill_form(data)
+        form_field_fill(browser, values[0], values[1])
 
 
 @when(parse('I select the option "{value}" from "{field}"'))
