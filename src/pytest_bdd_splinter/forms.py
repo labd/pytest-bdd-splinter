@@ -110,7 +110,16 @@ def when_fill_multiple_fields(browser: BaseWebDriver, text):
 
 @when(parse('I select the option "{value}" from "{field}"'))
 def when_form_option_select(browser: BaseWebDriver, field, value):
-    browser.select(field, value)
+    """Select an option in a <select> field, either by name or value.
+    The field can be found by name or ID.
+    """
+    # First find the <select> box so developers don't have to debug whether
+    # the <select> box doesn't exist, or the <option> doesn't exist.
+    field = find_by_name_or_id(browser, field).first
+    option = field.find_by_xpath(
+        f'//option[@value="{value}" or text()="{value}"]'
+    ).first
+    option.click()
 
 
 @then(parse('the "{field}" field should contain "{value}"'))
@@ -131,5 +140,19 @@ def then_form_field_contains(browser: BaseWebDriver, field, value, form):
 
 
 @then(parse('the option "{value}" should be selected in "{field}"'))
-def then_form_option_selected(browser: BaseWebDriver, field, value):
-    assert browser.find_by_name(field).value == value
+def then_form_option_selected(browser: BaseWebDriver, value, field):
+    """The field can be selected as name or ID."""
+    elm = find_by_name_or_id(browser, field).first
+
+    # The following is really slow on large lists because it iterates over all options:
+    # option = Select(elm._element).first_selected_option  # selenium specific
+    # Hence taking advantage of the classic 'selectedIndex' attribute instead.
+    selected_index = int(elm["selectedIndex"])
+    assert int(selected_index) >= 0, f'Field "{field}" has no option selected'
+
+    options = elm.find_by_xpath(f"(option)[{selected_index + 1}]")
+    assert options, f'No selected option found for field "{field}"'
+    option = options.first
+    assert (
+        option.text == value or option["value"] == value
+    ), f'Selected option of "{field}" is "{option.text}", not "{value}"'

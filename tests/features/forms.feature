@@ -62,7 +62,7 @@ Feature: Forms
 
     Scenario: Select item in dropdown
         Given I am on "/forms"
-        When I select the option "NL" from "country"
+        When I select the option "Nederland" from "country"
         Then the option "NL" should be selected in "country"
 
     Scenario: Type text in field for specific form
