@@ -8,6 +8,7 @@ reports/
 build/
 dist/
 .cache/
+.idea/
 .mypy_cache/
 .vscode/
 .tox/
