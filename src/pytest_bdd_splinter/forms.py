@@ -7,7 +7,7 @@ from .utils import (
     find_by_name_or_id,
     find_by_text,
     find_option,
-    form_field_fill,
+    parse_table,
     type_slowly,
 )
 
@@ -102,11 +102,11 @@ def when_slowly_type_value_in_form_field_1cps(
     )
 
 
-@when(parse("I fill in the following:\n{text}"))
-def when_fill_multiple_fields(browser: BaseWebDriver, text):
-    for line in text.split("\n"):
-        values = [i.strip() for i in line.strip().strip("|").split("|")]
-        form_field_fill(browser, values[0], values[1])
+@when(parse("I fill in the following:\n{table}"), converters={"table": parse_table})
+def when_fill_multiple_fields(browser: BaseWebDriver, table):
+    for name, value in table:
+        field = find_by_name_or_id(browser, name).first
+        fill_text_field(field, value)
 
 
 # too greedy: @when(parse('I select the option "{value}" from "{field}"'))

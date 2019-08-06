@@ -1,5 +1,5 @@
 import time
-from typing import Union
+from typing import List, Union
 
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.expected_conditions import visibility_of
@@ -68,7 +68,7 @@ def fill_text_field(element: WebDriverElement, value: str):
 def form_field_fill(
     browser: BaseWebDriver, field_name: str, value: str, form_name=None
 ):
-    # Mainly preserved for backward
+    # Mainly preserved for backward compatibility
     if form_name:
         base_element = find_by_name_or_id(browser, form_name).first
         element = find_by_name_or_id(base_element, field_name).first
@@ -76,6 +76,14 @@ def form_field_fill(
         element = find_by_name_or_id(browser, field_name).first
 
     fill_text_field(element, value)
+
+
+def parse_table(text) -> List[List[str]]:
+    data = []
+    for line in text.split("\n"):
+        values = [i.strip() for i in line.strip().strip("|").split("|")]
+        data.append(values)
+    return data
 
 
 def type_slowly(elm, value, *, cps=100):
