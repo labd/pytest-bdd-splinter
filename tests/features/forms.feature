@@ -12,6 +12,14 @@ Feature: Forms
         Then the radiobutton "radio1-1" is checked
         And the radiobutton "radio1-2" is not checked
 
+    Scenario: Radio button in form 2
+        Given I am on "/forms"
+        When I press "Radio 2" in "form-2"
+        Then the radiobutton "radio2-2" is checked
+        But the radiobutton "radio1-1" is not checked
+        But the radiobutton "radio1-2" is not checked
+        But the radiobutton "radio2-1" is not checked
+
     Scenario: Type text in field simple
         Given I am on "/forms"
         When I enter "some new text" in the "prefilled" field

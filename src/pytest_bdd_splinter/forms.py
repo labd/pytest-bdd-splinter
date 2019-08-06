@@ -6,6 +6,7 @@ from .utils import (
     fill_text_field,
     find_by_name_or_id,
     find_by_text,
+    find_child_by_text,
     find_option,
     parse_table,
     type_slowly,
@@ -83,8 +84,7 @@ def when_slowly_type_value_in_field_1cps(browser: BaseWebDriver, field, value):
 def when_slowly_type_value_in_form_field(
     browser: BaseWebDriver, field, form, value, cps
 ):
-    form_elm = find_by_name_or_id(browser, form).first
-    elm = find_by_text(form_elm, field).first
+    elm = find_child_by_text(browser, form, field).first
     type_slowly(elm, value, cps=cps)
 
 

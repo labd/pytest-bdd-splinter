@@ -14,19 +14,34 @@ def absolute_url(base_url, page):
     return base_url + page
 
 
-def find_by_text(browser, text) -> ElementList:
+def find_by_text(
+    base_element: Union[BaseWebDriver, WebDriverElement], text: str
+) -> ElementList:
     assert '"' not in text, f"Unsupported text element: {text!r}"
-    return browser.find_by_xpath(
+    return base_element.find_by_xpath(
         f'//*[@value="{text}" or @id="{text}" or @name="{text}" or text()="{text}"]'
     )
 
 
 def find_by_name_or_id(
-    browser: Union[BaseWebDriver, WebDriverElement], name_or_id: str
+    base_element: Union[BaseWebDriver, WebDriverElement], name_or_id: str
 ) -> ElementList:
     """Allow elements to by found by ID and name."""
     assert '"' not in name_or_id, f"Unsupported element name: {name_or_id!r}"
-    return browser.find_by_xpath(f'//*[@id="{name_or_id}" or @name="{name_or_id}"]')
+    return base_element.find_by_xpath(
+        f'//*[@id="{name_or_id}" or @name="{name_or_id}"]'
+    )
+
+
+def find_child_by_text(browser: BaseWebDriver, parent: str, text: str) -> ElementList:
+    # Find by child with text() appears to be broken in selenium webdrivers,
+    # so select in a single path:
+    assert '"' not in parent, f"Unsupported element name: {parent!r}"
+    assert '"' not in text, f"Unsupported text element: {text!r}"
+    return browser.find_by_xpath(
+        f'//*[@id="{parent}" or @name="{parent}"]'
+        f'//*[@value="{text}" or @id="{text}" or @name="{text}" or text()="{text}"]'
+    )
 
 
 def find_option(field, value: str):
