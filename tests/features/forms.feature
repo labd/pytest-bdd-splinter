@@ -2,15 +2,15 @@ Feature: Forms
 
     Scenario: Unchecked state
         Given I am on "/forms"
-        When I press "checkbox-2"
-        Then the checkbox "checkbox-1" is not checked
-        And the checkbox "checkbox-2" is checked
+        When I press "checkbox1-2"
+        Then the checkbox "checkbox1-1" is not checked
+        And the checkbox "checkbox1-2" is checked
 
     Scenario: Radio button
         Given I am on "/forms"
         When I press "Radio 1"
-        Then the radiobutton "radio-1" is checked
-        And the radiobutton "radio-2" is not checked
+        Then the radiobutton "radio1-1" is checked
+        And the radiobutton "radio1-2" is not checked
 
     Scenario: Type text in field simple
         Given I am on "/forms"
