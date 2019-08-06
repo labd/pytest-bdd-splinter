@@ -60,6 +60,14 @@ Feature: Forms
         Then the "username" field should contain "johndoe"
         And the "password" field should contain "mysecret"
 
+    Scenario: Multifield input in form 2
+        Given I am on "/forms"
+        When I fill in the following in "form-2":
+            | username | johndoe  |
+            | password | mysecret |
+        Then the "username" field in "form-2" should contain "johndoe"
+        And the "password" field in "form-2" should contain "mysecret"
+
     Scenario: Select item in dropdown
         Given I am on "/forms"
         When I select the option "Nederland" from "country"

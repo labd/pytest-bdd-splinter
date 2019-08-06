@@ -109,6 +109,17 @@ def when_fill_multiple_fields(browser: BaseWebDriver, table):
         fill_text_field(field, value)
 
 
+@when(
+    parse('I fill in the following in "{form}":\n{table}'),
+    converters={"table": parse_table},
+)
+def when_fill_multiple_fields_form(browser: BaseWebDriver, form, table):
+    form = find_by_name_or_id(browser, form).first
+    for name, value in table:
+        field = find_by_name_or_id(form, name).first
+        fill_text_field(field, value)
+
+
 # too greedy: @when(parse('I select the option "{value}" from "{field}"'))
 @when(parsers.re(r'^I select the option "(?P<value>.+?)" from "(?P<field>[^\"]+)"$'))
 def when_form_option_select(browser: BaseWebDriver, field, value):
