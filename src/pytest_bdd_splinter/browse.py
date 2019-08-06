@@ -1,5 +1,6 @@
 from pytest_bdd import given, then, when
 from pytest_bdd.parsers import parse
+from selenium.common.exceptions import WebDriverException
 from splinter.driver.webdriver import BaseWebDriver
 
 from .utils import absolute_url, find_by_text
@@ -49,3 +50,18 @@ def when_press_button(browser: BaseWebDriver, button):
 @then(parse('I should be on "{page}"'))
 def should_be_on_page(browser, browser_base_url, page):
     assert browser.url == absolute_url(browser_base_url, page)
+
+
+@then("I print the current url")
+def print_current_url(browser: BaseWebDriver):
+    """Dump the current URL"""
+    print("      Current URL:", browser.driver.current_url)
+
+    try:
+        browser_console = browser.driver.get_log("browser")
+    except WebDriverException:
+        pass  # not supported on Firefox webdriver.
+    else:
+        print("      Browser console:")
+        for entry in browser_console:
+            print("        {level:7} {source}:\t{message}".format(**entry))
