@@ -4,7 +4,7 @@ from pytest_bdd import then, when
 from pytest_bdd.parsers import parse
 from splinter.driver.webdriver import BaseWebDriver
 
-from .utils import find_by_text, form_field_fill
+from .utils import fill_text_field, find_by_name_or_id, find_by_text, form_field_fill
 
 
 @then(parse('the checkbox "{field}" is checked'))
@@ -33,12 +33,15 @@ def radiobutton_not_checked(browser: BaseWebDriver, field):
 
 @when(parse('I enter "{value}" in the "{field}" field'))
 def when_enter_value_in_field(browser: BaseWebDriver, field, value):
-    form_field_fill(browser, field, value)
+    element = find_by_name_or_id(browser, field).first
+    fill_text_field(element, value)
 
 
 @when(parse('I enter "{value}" in the "{field}" field in form "{form}"'))
 def when_enter_value_in_field_form(browser: BaseWebDriver, field, value, form):
-    form_field_fill(browser, field, value, form_name=form)
+    form = find_by_name_or_id(browser, form).first
+    element = find_by_name_or_id(form, field).first
+    fill_text_field(element, value)
 
 
 @when(parse('I type "{value}" in field "{field}"'))
@@ -82,13 +85,19 @@ def when_form_option_select(browser: BaseWebDriver, field, value):
 
 @then(parse('the "{field}" field should contain "{value}"'))
 def then_field_contains(browser: BaseWebDriver, field, value):
-    assert browser.find_by_name(field).value == value
+    elm = find_by_name_or_id(browser, field).first
+    found_text = elm.value  # takes .text for non-input fields.
+    assert found_text == value, f'Text "{value}" not equal {found_text!r} in "{field}"'
 
 
 @then(parse('the "{field}" field in "{form}" should contain "{value}"'))
 def then_form_field_contains(browser: BaseWebDriver, field, value, form):
-    form_elm = browser.find_by_name(form).first
-    assert form_elm.find_by_name(field).value == value
+    form_elm = find_by_name_or_id(browser, form).first
+    elm = find_by_name_or_id(form_elm, field).first
+    found_text = elm.value  # takes .text for non-input fields.
+    assert (
+        found_text == value
+    ), f'Text "{value}" not equal {found_text!r} in "{field}" of form "{form}"'
 
 
 @then(parse('the option "{value}" should be selected in "{field}"'))

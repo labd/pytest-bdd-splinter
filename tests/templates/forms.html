@@ -61,7 +61,7 @@
     </div>
     <div id="prefilled-container" style="display: none;">
         <label for="prefilled">Prefilled</label>
-        <input type="text" id="prefilled" name="prefilled" value="prefilled">
+        <input type="text" id="prefilled" name="prefilled" value="prefilled with text">
     </div>
     <div id="lazy-prefilled-container" style="display: none;">
         <label for="lazy-prefilled">Prefilled</label>
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function(){
         document.getElementById("prefilled-container").style = "display: block;"
         document.getElementById("lazy-prefilled-container").style = "display: block;"
-        document.getElementById("lazy-prefilled").value = "prefilled"
+        document.getElementById("lazy-prefilled").value = "prefilled with text";  // have spaces
     }, 400)
 });
 </script>
