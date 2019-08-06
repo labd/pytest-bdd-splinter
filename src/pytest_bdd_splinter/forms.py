@@ -10,25 +10,25 @@ from .utils import find_by_text, form_field_fill
 @then(parse('the checkbox "{field}" is checked'))
 def checkbox_checked(browser: BaseWebDriver, field):
     elm = find_by_text(browser, field)
-    assert elm.checked
+    assert elm.checked, f"Checkbox {field} is not checked"
 
 
 @then(parse('the checkbox "{field}" is not checked'))
 def checkbox_not_checked(browser: BaseWebDriver, field):
     elm = find_by_text(browser, field)
-    assert not elm.checked
+    assert not elm.checked, f"Checkbox {field} is checked"
 
 
 @then(parse('the radiobutton "{field}" is checked'))
 def radiobutton_checked(browser: BaseWebDriver, field):
     elm = find_by_text(browser, field)
-    assert elm.checked
+    assert elm.checked, f"Radiobutton {field} is not checked"
 
 
 @then(parse('the radiobutton "{field}" is not checked'))
 def radiobutton_not_checked(browser: BaseWebDriver, field):
     elm = find_by_text(browser, field)
-    assert not elm.checked
+    assert not elm.checked, f"Radiobutton {field} is checked"
 
 
 @when(parse('I enter "{value}" in the "{field}" field'))
