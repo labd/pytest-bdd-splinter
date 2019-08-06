@@ -65,6 +65,11 @@ Feature: Forms
         When I select the option "Nederland" from "country"
         Then the option "NL" should be selected in "country"
 
+    Scenario: Select item in dropdown of form 2
+        Given I am on "/forms"
+        When I select the option "Nederland" from "country" in form "form-2"
+        Then the option "NL" should be selected in "country" in form "form-2"
+
     Scenario: Type text in field for specific form
         Given I am on "/forms"
         When I enter "foobar" in the "username" field in form "form-2"

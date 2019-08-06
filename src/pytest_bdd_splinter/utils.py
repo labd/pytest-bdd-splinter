@@ -15,6 +15,7 @@ def absolute_url(base_url, page):
 
 
 def find_by_text(browser, text) -> ElementList:
+    assert '"' not in text, f"Unsupported text element: {text!r}"
     return browser.find_by_xpath(
         f'//*[@value="{text}" or @id="{text}" or @name="{text}" or text()="{text}"]'
     )
@@ -24,9 +25,13 @@ def find_by_name_or_id(
     browser: Union[BaseWebDriver, WebDriverElement], name_or_id: str
 ) -> ElementList:
     """Allow elements to by found by ID and name."""
-    # Should not try "find_by_name() or find_by_id()" as this causes 2 slow requests.
-    # TODO: A nice addition would be finding form fields by their for-label.
+    assert '"' not in name_or_id, f"Unsupported element name: {name_or_id!r}"
     return browser.find_by_xpath(f'//*[@id="{name_or_id}" or @name="{name_or_id}"]')
+
+
+def find_option(field, value: str):
+    """Find the option for a ``<select>`` field."""
+    return field.find_by_xpath(f'//option[@value="{value}" or text()="{value}"]')
 
 
 def fill_text_field(element: WebDriverElement, value: str):

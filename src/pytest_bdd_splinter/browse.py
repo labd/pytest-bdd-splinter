@@ -1,4 +1,4 @@
-from pytest_bdd import given, then, when
+from pytest_bdd import given, parsers, then, when
 from pytest_bdd.parsers import parse
 from selenium.common.exceptions import WebDriverException
 from splinter.driver.webdriver import BaseWebDriver

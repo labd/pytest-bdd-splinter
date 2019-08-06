@@ -1,4 +1,4 @@
-from pytest_bdd import then, when
+from pytest_bdd import parsers, then, when
 from pytest_bdd.parsers import parse
 from splinter.driver.webdriver import BaseWebDriver
 
@@ -6,6 +6,7 @@ from .utils import (
     fill_text_field,
     find_by_name_or_id,
     find_by_text,
+    find_option,
     form_field_fill,
     type_slowly,
 )
@@ -108,7 +109,8 @@ def when_fill_multiple_fields(browser: BaseWebDriver, text):
         form_field_fill(browser, values[0], values[1])
 
 
-@when(parse('I select the option "{value}" from "{field}"'))
+# too greedy: @when(parse('I select the option "{value}" from "{field}"'))
+@when(parsers.re(r'^I select the option "(?P<value>.+?)" from "(?P<field>[^\"]+)"$'))
 def when_form_option_select(browser: BaseWebDriver, field, value):
     """Select an option in a <select> field, either by name or value.
     The field can be found by name or ID.
@@ -116,9 +118,20 @@ def when_form_option_select(browser: BaseWebDriver, field, value):
     # First find the <select> box so developers don't have to debug whether
     # the <select> box doesn't exist, or the <option> doesn't exist.
     field = find_by_name_or_id(browser, field).first
-    option = field.find_by_xpath(
-        f'//option[@value="{value}" or text()="{value}"]'
-    ).first
+    option = find_option(field, value).first
+    option.click()
+
+
+@when(parse('I select the option "{value}" from "{field}" in form "{form}"'))
+def when_form_option_select_form(browser: BaseWebDriver, field, value, form):
+    """Select an option in a <select> field, either by name or value.
+    The field can be found by name or ID.
+    """
+    # First find the <select> box so developers don't have to debug whether
+    # the <select> box doesn't exist, or the <option> doesn't exist.
+    form = find_by_name_or_id(browser, form).first
+    field = find_by_name_or_id(form, field).first
+    option = find_option(field, value).first
     option.click()
 
 
@@ -139,20 +152,35 @@ def then_form_field_contains(browser: BaseWebDriver, field, value, form):
     ), f'Text "{value}" not equal {found_text!r} in "{field}" of form "{form}"'
 
 
-@then(parse('the option "{value}" should be selected in "{field}"'))
+# too greedy: @then(parse('the option "{value}" should be selected in "{field}"'))
+@then(
+    parsers.re('^the option "(?P<value>.+?)" should be selected in "(?P<field>[^"]+)"$')
+)
 def then_form_option_selected(browser: BaseWebDriver, value, field):
     """The field can be selected as name or ID."""
     elm = find_by_name_or_id(browser, field).first
+    _assert_selected(field, elm, value)
 
-    # The following is really slow on large lists because it iterates over all options:
-    # option = Select(elm._element).first_selected_option  # selenium specific
-    # Hence taking advantage of the classic 'selectedIndex' attribute instead.
+
+@then(parse('the option "{value}" should be selected in "{field}" in form "{form}"'))
+def then_form_option_selected_form(browser: BaseWebDriver, value, field, form):
+    form_elm = find_by_name_or_id(browser, form).first
+    elm = find_by_name_or_id(form_elm, field).first
+    _assert_selected(field, elm, value)
+
+
+def _assert_selected(name, elm, value):
+    # The following selenium-specific code is really slow on large lists
+    # because it iterates over all options:
+    #   option = Select(elm._element).first_selected_option
+    #
+    # Hence taking advantage of the classic 'selectedIndex' attribute instead:
     selected_index = int(elm["selectedIndex"])
-    assert int(selected_index) >= 0, f'Field "{field}" has no option selected'
+    assert int(selected_index) >= 0, f'Field "{name}" has no option selected'
 
     options = elm.find_by_xpath(f"(option)[{selected_index + 1}]")
-    assert options, f'No selected option found for field "{field}"'
+    assert options, f'No selected option found for field "{name}"'
     option = options.first
     assert (
         option.text == value or option["value"] == value
-    ), f'Selected option of "{field}" is "{option.text}", not "{value}"'
+    ), f'Selected option of "{name}" is "{option.text}", not "{value}"'
