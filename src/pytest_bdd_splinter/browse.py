@@ -43,7 +43,7 @@ def when_reload_the_page(browser):
 
 @when(parse('I press "{button}"'))
 def when_press_button(browser: BaseWebDriver, button):
-    elm = find_by_text(browser, button)
+    elm = find_by_text(browser, button).first
     elm.click()
 
 

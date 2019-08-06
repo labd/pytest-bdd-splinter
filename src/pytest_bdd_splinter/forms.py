@@ -9,25 +9,25 @@ from .utils import find_by_text, form_field_fill
 
 @then(parse('the checkbox "{field}" is checked'))
 def checkbox_checked(browser: BaseWebDriver, field):
-    elm = find_by_text(browser, field)
+    elm = find_by_text(browser, field).first
     assert elm.checked, f"Checkbox {field} is not checked"
 
 
 @then(parse('the checkbox "{field}" is not checked'))
 def checkbox_not_checked(browser: BaseWebDriver, field):
-    elm = find_by_text(browser, field)
+    elm = find_by_text(browser, field).first
     assert not elm.checked, f"Checkbox {field} is checked"
 
 
 @then(parse('the radiobutton "{field}" is checked'))
 def radiobutton_checked(browser: BaseWebDriver, field):
-    elm = find_by_text(browser, field)
+    elm = find_by_text(browser, field).first
     assert elm.checked, f"Radiobutton {field} is not checked"
 
 
 @then(parse('the radiobutton "{field}" is not checked'))
 def radiobutton_not_checked(browser: BaseWebDriver, field):
-    elm = find_by_text(browser, field)
+    elm = find_by_text(browser, field).first
     assert not elm.checked, f"Radiobutton {field} is checked"
 
 
@@ -87,7 +87,7 @@ def then_field_contains(browser: BaseWebDriver, field, value):
 
 @then(parse('the "{field}" field in "{form}" should contain "{value}"'))
 def then_form_field_contains(browser: BaseWebDriver, field, value, form):
-    form_elm = browser.find_by_name(form)
+    form_elm = browser.find_by_name(form).first
     assert form_elm.find_by_name(field).value == value
 
 
