@@ -1,3 +1,4 @@
+import time
 from typing import Union
 
 from selenium.webdriver.common.keys import Keys
@@ -70,3 +71,8 @@ def form_field_fill(
         element = find_by_name_or_id(browser, field_name).first
 
     fill_text_field(element, value)
+
+
+def type_slowly(elm, value, *, cps=100):
+    for _ in elm.type(value, slowly=True):
+        time.sleep(1.0 / cps)

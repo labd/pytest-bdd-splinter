@@ -42,6 +42,16 @@ Feature: Forms
         When I type "foobar" in field "username" with 8 characters per second
         Then the "username" field should contain "foobar"
 
+    Scenario: Slowly type text in field of form 2
+        Given I am on "/forms"
+        When I type "x" in the "username" field in "form-2" with 1 character per second
+        Then the "username" field in "form-2" should contain "x"
+
+    Scenario: Faster type text in field of form 2
+        Given I am on "/forms"
+        When I type "foobar" in the "username" field in "form-2" with 8 characters per second
+        Then the "username" field in "form-2" should contain "foobar"
+
     Scenario: Multifield input
         Given I am on "/forms"
         When I fill in the following:

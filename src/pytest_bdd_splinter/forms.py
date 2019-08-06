@@ -1,10 +1,14 @@
-import time
-
 from pytest_bdd import then, when
 from pytest_bdd.parsers import parse
 from splinter.driver.webdriver import BaseWebDriver
 
-from .utils import fill_text_field, find_by_name_or_id, find_by_text, form_field_fill
+from .utils import (
+    fill_text_field,
+    find_by_name_or_id,
+    find_by_text,
+    form_field_fill,
+    type_slowly,
+)
 
 
 @then(parse('the checkbox "{field}" is checked'))
@@ -57,9 +61,8 @@ def when_type_value_in_field(browser: BaseWebDriver, field, value):
     )
 )
 def when_slowly_type_value_in_field(browser: BaseWebDriver, field, value, cps):
-    cps = int(cps)
-    for i in browser.type(field, value, slowly=True):
-        time.sleep(1.0 / cps)
+    elm = find_by_name_or_id(browser, field).first
+    type_slowly(elm, value, cps=int(cps))
 
 
 @when(parse('I type "{value}" in field "{field}" with 1 character per second'))
@@ -67,8 +70,35 @@ def when_slowly_type_value_in_field(browser: BaseWebDriver, field, value, cps):
     parse('I type in field "{field}" the value "{value}" with 1 character per second')
 )
 def when_slowly_type_value_in_field_1cps(browser: BaseWebDriver, field, value):
-    for i in browser.type(field, value, slowly=True):
-        time.sleep(1)
+    when_slowly_type_value_in_field(browser, field, value, cps=1)
+
+
+@when(
+    parse(
+        'I type "{value}" in the "{field}" field in "{form}"'
+        " with {cps:d} characters per second"
+    )
+)
+def when_slowly_type_value_in_form_field(
+    browser: BaseWebDriver, field, form, value, cps
+):
+    form_elm = find_by_name_or_id(browser, form).first
+    elm = find_by_text(form_elm, field).first
+    type_slowly(elm, value, cps=cps)
+
+
+@when(
+    parse(
+        'I type "{value}" in the "{field}" field in "{form}"'
+        " with 1 character per second"
+    )
+)
+def when_slowly_type_value_in_form_field_1cps(
+    browser: BaseWebDriver, field, form, value
+):
+    when_slowly_type_value_in_form_field(
+        browser, field=field, value=value, form=form, cps=1
+    )
 
 
 @when(parse("I fill in the following:\n{text}"))
