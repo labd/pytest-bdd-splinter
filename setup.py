@@ -16,9 +16,13 @@ tests_require = [
     "flake8-debugger==1.4.0",
 ]
 
-with open('README.md') as fh:
+with open("README.md") as fh:
     long_description = re.sub(
-        '<!-- start-no-pypi -->.*<!-- end-no-pypi -->\n', '', fh.read(), flags=re.M | re.S)
+        "<!-- start-no-pypi -->.*<!-- end-no-pypi -->\n",
+        "",
+        fh.read(),
+        flags=re.M | re.S,
+    )
 
 setup(
     name="pytest-bdd-splinter",

@@ -47,3 +47,7 @@ Feature: Browse
         Given I am on the homepage
         When I click on the link "go to subpage"
         Then I should be on "/subpage/"
+
+    Scenario: Test printing current URL
+        Given I am on the homepage
+        Then I print the current url

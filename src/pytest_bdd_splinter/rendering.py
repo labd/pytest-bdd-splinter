@@ -33,19 +33,19 @@ def resize_browser_format(browser, device):
 
 @when(parse('I see "{text}"'))
 def then_text_available(browser: BaseWebDriver, text):
-    assert browser.is_text_present(text)
+    assert browser.is_text_present(text), f'Text "{text}" not found'
 
 
 @then(parse('I should see "{text}"'))
 def then_text_available(browser: BaseWebDriver, text):
-    assert browser.is_text_present(text)
+    assert browser.is_text_present(text), f'Text "{text}" not found'
 
 
 @when(parse('I do not see "{text}"'))
 def when_text_not_available(browser: BaseWebDriver, text):
-    assert browser.is_text_not_present(text)
+    assert browser.is_text_not_present(text), f'Text "{text}" still found'
 
 
 @then(parse('I should not see "{text}"'))
 def then_text_not_available(browser: BaseWebDriver, text):
-    assert browser.is_text_not_present(text)
+    assert browser.is_text_not_present(text), f'Text "{text}" still found'

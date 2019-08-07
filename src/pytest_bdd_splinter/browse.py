@@ -1,8 +1,9 @@
-from pytest_bdd import given, then, when
+from pytest_bdd import given, parsers, then, when
 from pytest_bdd.parsers import parse
+from selenium.common.exceptions import WebDriverException
 from splinter.driver.webdriver import BaseWebDriver
 
-from .utils import absolute_url, find_by_text
+from .utils import absolute_url, find_by_name_or_id, find_by_text, find_child_by_text
 
 
 @given("I am on the homepage")
@@ -40,12 +41,34 @@ def when_reload_the_page(browser):
     browser.reload()
 
 
-@when(parse('I press "{button}"'))
-def when_press_button(browser: BaseWebDriver, button):
-    elm = find_by_text(browser, button)
+# too greedy: @when(parse('I press "{text}"'))
+@when(parsers.re('^I press "(?P<text>[^"]+)"$'))
+def when_press_button(browser: BaseWebDriver, text):
+    elm = find_by_text(browser, text).first
+    elm.click()
+
+
+@when(parse('I press "{text}" in "{element}"'))
+def when_press_button_form(browser: BaseWebDriver, text, element):
+    elm = find_child_by_text(browser, element, text).first
     elm.click()
 
 
 @then(parse('I should be on "{page}"'))
 def should_be_on_page(browser, browser_base_url, page):
     assert browser.url == absolute_url(browser_base_url, page)
+
+
+@then("I print the current url")
+def print_current_url(browser: BaseWebDriver):
+    """Dump the current URL"""
+    print("      Current URL:", browser.driver.current_url)
+
+    try:
+        browser_console = browser.driver.get_log("browser")
+    except WebDriverException:
+        pass  # not supported on Firefox webdriver.
+    else:
+        print("      Browser console:")
+        for entry in browser_console:
+            print("        {level:7} {source}:\t{message}".format(**entry))
