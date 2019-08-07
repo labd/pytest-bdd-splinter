@@ -29,7 +29,10 @@ def form_field_fill(
     if form_name:
         WebDriverWait(browser.driver, 10).until(
             expected_conditions.element_to_be_clickable(
-                (By.XPATH, "//form[@name='%s']/*/input[@name='%s']" % (form_name, field_name))
+                (
+                    By.XPATH,
+                    "//form[@name='%s']/*/input[@name='%s']" % (form_name, field_name),
+                )
             )
         )
 

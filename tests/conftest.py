@@ -1,6 +1,6 @@
-import pytest
 from multiprocessing import Process
 
+import pytest
 
 from pytest_bdd_splinter import *  # noqa
 
