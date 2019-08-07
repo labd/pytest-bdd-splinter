@@ -33,6 +33,18 @@ def find_by_name_or_id(
     )
 
 
+def find_child_by_name_or_id(
+    browser: BaseWebDriver, parent: str, name_or_id: str
+) -> ElementList:
+    assert '"' not in parent, f"Unsupported element name: {parent!r}"
+    assert '"' not in name_or_id, f"Unsupported element name: {name_or_id!r}"
+    find_by_name_or_id(browser, parent).first  # checks existence for easier debugging
+    return browser.find_by_xpath(
+        f'//*[@id="{parent}" or @name="{parent}"]'
+        f'//*[@id="{name_or_id}" or @name="{name_or_id}"]'
+    )
+
+
 def find_child_by_text(browser: BaseWebDriver, parent: str, text: str) -> ElementList:
     # Find by child with text() appears to be broken in selenium webdrivers,
     # so select in a single path:

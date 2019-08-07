@@ -6,6 +6,7 @@ from .utils import (
     fill_text_field,
     find_by_name_or_id,
     find_by_text,
+    find_child_by_name_or_id,
     find_child_by_text,
     find_option,
     parse_table,
@@ -45,8 +46,7 @@ def when_enter_value_in_field(browser: BaseWebDriver, field, value):
 
 @when(parse('I enter "{value}" in the "{field}" field in form "{form}"'))
 def when_enter_value_in_field_form(browser: BaseWebDriver, field, value, form):
-    form = find_by_name_or_id(browser, form).first
-    element = find_by_name_or_id(form, field).first
+    element = find_child_by_name_or_id(browser, form, field).first
     fill_text_field(element, value)
 
 
@@ -114,9 +114,8 @@ def when_fill_multiple_fields(browser: BaseWebDriver, table):
     converters={"table": parse_table},
 )
 def when_fill_multiple_fields_form(browser: BaseWebDriver, form, table):
-    form = find_by_name_or_id(browser, form).first
     for name, value in table:
-        field = find_by_name_or_id(form, name).first
+        field = find_child_by_name_or_id(browser, form, name).first
         fill_text_field(field, value)
 
 
@@ -140,8 +139,7 @@ def when_form_option_select_form(browser: BaseWebDriver, field, value, form):
     """
     # First find the <select> box so developers don't have to debug whether
     # the <select> box doesn't exist, or the <option> doesn't exist.
-    form = find_by_name_or_id(browser, form).first
-    field = find_by_name_or_id(form, field).first
+    field = find_child_by_name_or_id(browser, form, field)
     option = find_option(field, value).first
     option.click()
 
@@ -155,12 +153,27 @@ def then_field_contains(browser: BaseWebDriver, field, value):
 
 @then(parse('the "{field}" field in "{form}" should contain "{value}"'))
 def then_form_field_contains(browser: BaseWebDriver, field, value, form):
-    form_elm = find_by_name_or_id(browser, form).first
-    elm = find_by_name_or_id(form_elm, field).first
+    elm = find_child_by_name_or_id(browser, form, field)
     found_text = elm.value  # takes .text for non-input fields.
     assert (
         found_text == value
     ), f'Text "{value}" not equal {found_text!r} in "{field}" of form "{form}"'
+
+
+@then(parse('the "{field}" field should be empty'))
+def then_field_is_empty(browser: BaseWebDriver, field):
+    elm = find_by_name_or_id(browser, field).first
+    found_text = elm.value  # takes .text for non-input fields.
+    assert found_text == "", f'Field "{field}" is not empty, found "{found_text!r}"'
+
+
+@then(parse('the "{field}" field in "{form}" should be empty'))
+def then_form_field_empty(browser: BaseWebDriver, field, form):
+    elm = find_child_by_name_or_id(browser, form, field).first
+    found_text = elm.value  # takes .text for non-input fields.
+    assert (
+        found_text == ''
+    ), f'Field "{field}" of form "{form}" is not empty, found "{found_text!r}"'
 
 
 # too greedy: @then(parse('the option "{value}" should be selected in "{field}"'))
@@ -175,8 +188,7 @@ def then_form_option_selected(browser: BaseWebDriver, value, field):
 
 @then(parse('the option "{value}" should be selected in "{field}" in form "{form}"'))
 def then_form_option_selected_form(browser: BaseWebDriver, value, field, form):
-    form_elm = find_by_name_or_id(browser, form).first
-    elm = find_by_name_or_id(form_elm, field).first
+    elm = find_child_by_name_or_id(browser, form, field).first
     _assert_selected(field, elm, value)
 
 

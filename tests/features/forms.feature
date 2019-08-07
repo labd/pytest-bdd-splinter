@@ -54,11 +54,13 @@ Feature: Forms
         Given I am on "/forms"
         When I type "x" in the "username" field in "form-2" with 1 character per second
         Then the "username" field in "form-2" should contain "x"
+        But the "username" field in "form-1" should be empty
 
     Scenario: Faster type text in field of form 2
         Given I am on "/forms"
         When I type "foobar" in the "username" field in "form-2" with 8 characters per second
         Then the "username" field in "form-2" should contain "foobar"
+        But the "username" field in "form-1" should be empty
 
     Scenario: Multifield input
         Given I am on "/forms"
@@ -75,6 +77,7 @@ Feature: Forms
             | password | mysecret |
         Then the "username" field in "form-2" should contain "johndoe"
         And the "password" field in "form-2" should contain "mysecret"
+        But the "username" field in "form-1" should be empty
 
     Scenario: Select item in dropdown
         Given I am on "/forms"
@@ -90,3 +93,4 @@ Feature: Forms
         Given I am on "/forms"
         When I enter "foobar" in the "username" field in form "form-2"
         Then the "username" field in "form-2" should contain "foobar"
+        But the "username" field in "form-1" should be empty
