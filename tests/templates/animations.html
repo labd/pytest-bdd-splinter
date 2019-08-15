@@ -31,4 +31,16 @@
   </script>
 </div>
 
+<div style="padding: 20px;">
+  <div id="content-3" style="display: none">
+    <span>placeholder</span>
+
+  <script>
+    window.setTimeout(function(){
+      var elm = document.getElementById("content-3");
+      elm.innerHTML = "<span>Content - 3</span";
+      elm.style.display = "block";
+    }, 1000)
+  </script>
+</div>
 {% endblock body %}

@@ -51,3 +51,7 @@ Feature: Browse
     Scenario: Test printing current URL
         Given I am on the homepage
         Then I print the current url
+
+    Scenario: Delayed text on page
+        Given I am on "/animations"
+        Then I should see "Content - 3"
