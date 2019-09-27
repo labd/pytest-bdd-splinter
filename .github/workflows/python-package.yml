@@ -33,7 +33,7 @@ jobs:
         python -m pip install --upgrade pip tox
     - name: Test with tox
       run: |
-        tox -e ${{ matrix.tox_env }} --splinter-webdriver=remote --splinter-remote-url=http://localhost:4444/wd/hub
+        tox -e ${{ matrix.tox_env }} -- --splinter-webdriver=remote --splinter-remote-url=http://localhost:4444/wd/hub
     - name: Prepare Coverage report
       run: tox -e coverage-report
     - name: Upload to codecov
