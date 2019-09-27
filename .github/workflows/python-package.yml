@@ -18,8 +18,8 @@ jobs:
           - python-version: "3.7"
             tox_env: py37
     services:
-      chrome:
-        image: selenium/standalone-chrome:3.141
+      firefox:
+        image: selenium/standalone-firefox:3.141
         ports:
           - 4444:4444
     steps:
