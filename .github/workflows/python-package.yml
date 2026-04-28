@@ -23,9 +23,9 @@ jobs:
         ports:
           - 4444:4444
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@50fbc622fc4ef5163becd7fab6573eac35f8462e # v1.2.0
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@0f07f7f756721ebd886c2462646a35f78a8bc4de # v1.2.4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -37,7 +37,7 @@ jobs:
     - name: Prepare Coverage report
       run: tox -e coverage-report
     - name: Upload to codecov
-      uses: codecov/codecov-action@v1.0.2
+      uses: codecov/codecov-action@cb218a0977f94755cee8a27ab63232797780f625 # v1.0.2
       with:
         token: ${{secrets.CODECOV_TOKEN}}
         flags: unittests
@@ -47,18 +47,18 @@ jobs:
     needs: [test]
     steps:
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@0f07f7f756721ebd886c2462646a35f78a8bc4de # v1.2.4
       with:
         python-version: "3.7"
     - name: Install build requirements
       run: |
         python -m pip install wheel
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@50fbc622fc4ef5163becd7fab6573eac35f8462e # v1.2.0
     - name: Build package
       run: python setup.py sdist bdist_wheel
     - name: Publish package
       if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-      uses: pypa/gh-action-pypi-publish@master
+      uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
       with:
         user: __token__
         password: ${{ secrets.pypi_password }}
